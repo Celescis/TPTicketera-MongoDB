@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="botones">
+    <button class="boton" (click)="cargarTickets()">Traer Todos</button>
+    <button class="boton" (click)="mostrarInfo('Info para Botón 2')">Botón 2</button>
+    <button class="boton" (click)="mostrarInfo('Info para Botón 3')">Botón 3</button>
+    <button class="boton" (click)="mostrarInfo('Info para Botón 4')">Botón 4</button>
+  </div>
+  <div class="respuesta">
+    {{ infoSeleccionada }}
+    <div *ngFor="let ticket of tickets">
+      <p>CLIENTE:</p>
+      <p>Nombre: {{ ticket.cliente.nombre }}</p>
+      <p>Apellido: {{ ticket.cliente.apellido }}</p>
+    </div>
+  </div>
+</div>

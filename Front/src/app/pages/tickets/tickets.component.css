@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .botones {
+    flex: 1;
+    display:flex;
+    flex-direction:column;
+    align-items:start; 
+    padding: 10px;
+    justify-content:space-around;
+  }
+  
+  .boton {
+    margin-bottom: 60px; /* Espacio entre botones */
+  }
+  
+  .respuesta {
+    flex: 1;
+    border-left: 2px solid #ccc;
+    padding: 20px;
+    display: flex;
+    align-items: start;
+    justify-content:initial;
+  }
+  
