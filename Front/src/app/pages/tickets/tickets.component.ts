@@ -17,7 +17,7 @@ export class TicketsComponent {
       (data) => {
         console.log(data);
         this.tickets = data;
-        this.infoSeleccionada = 'Tickets cargados.';
+        this.infoSeleccionada = '';
       },
       (error) => {
         console.error('Error al cargar tickets:', error);

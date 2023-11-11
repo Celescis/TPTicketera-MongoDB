@@ -1,12 +1,3 @@
-const database = 'Tickets';
-const collection = 'Ticket';
-
-// Create a new database.
-use(database);
-
-// Create a new collection.
-db.createCollection(collection);
-
 //COLECCION TICKETS
 // #El objeto ticket debe tener atributos de de tipo:
 // objeto,
@@ -14,68 +5,74 @@ db.createCollection(collection);
 // arrays de valores,
 // arrays de objetos,
 // objeto con arrays de atributo.
-const now = new Date();
-const fecha = now.toISOString().split('T')[0];
-const hora = now.toLocaleTimeString('en-US');
+use('Ticketera');
 
-const ticket = [{
-  // Objeto: datos del cliente, con su ubicacion gps y plan, ademas veo si es empleado
-  "cliente": {
-    "nombre": "Celeste",
-    "apellido": "Cisternas",
-    "ubicacion": {
-      "localidad": {
-        "codigoPostal": "B1870",
-        "descripcion": "Avellaneda"
-      },
-      "coordenadas": {
-        "latitud": -34.6625,
-        "longitud": -58.365
-      }
-    },
-    "plan": {
-      "nombre": "SuperPackFull",
-      "canales": ["Canal 1", "Canal 2"]
-    },
-    "esEmpleado": false
-  },
-  // String: breve descripcion del cliete por lo cual pide el ticket
-  "descripcionCliente": "No puedo ver bien mis canales",
-  // Array de valores: motivos por los cuales se haria el ticket
-  "motivoTicket": ["desperfecto", "cambio de plan", "dar de baja", "dar de alta"],
-  // Array de objetos: informacion del ticket con fecha y hora y su estado, ademas quien fue el que tomo el ticket
-  "infoTicket": [
-    {
-      "fecha": fecha,
-      "hora": hora,
-      "estado": "abierto",
-      "responsableTicket": {
-        "nombre": "Pepita",
-        "apellido": "Gomez"
-      }
-    }
-  ],
-  // Objeto con arrays como atributos: guardar historial de derivaciones y que soluciones encontro cada sector
-  "derivacion": {
-    "historialDerivaciones": [
-      {
-        "fecha": fecha,
-        "departamento": "Servicio Técnico",
-        "responsableArea": {
-          "nombre": "Maria",
-          "apellido": "Fernandez"
+const ticket = [
+  {
+    "cliente": {
+        "nombre": "María",
+        "apellido": "González",
+        "contacto": {
+            "email": "maria.gonzalez@email.com",
+            "telefonos": ["22223333", "44445555"]
         },
-        "soluciones": [
-          {
-            "descripcion": "Se revisó la conexión a internet",
-            "exito": false
-          }
+        "ubicacion": {
+            "localidad": {
+                "codigoPostal": "E3260",
+                "descripcion": "Concordia"
+            },
+            "coordenadas": {
+                "latitud": -31.3928,
+                "longitud": -58.0209
+            }
+        },
+        "plan": {
+            "nombre": "Plan Básico",
+            "canales": ["Canal 5", "Canal 6"]
+        },
+        "esEmpleado": false
+    },
+    "comentarioCliente": "No tengo acceso al Canal 6",
+    "infoTicket": [
+        {
+            "fecha": new Date('2023-11-05'),
+            "hora": "18:00:00",
+            "estado": "cerrado",
+            "responsableTicket": {
+                "nombre": "Carlos",
+                "apellido": "Sánchez"
+            },
+            "motivo": "acceso denegado"
+        }
+    ],
+    "derivacion": {
+        "historialDerivaciones": [
+            {
+                "fecha": new Date('2023-11-06'),
+                "hora": "19:00:00",
+                "departamento": "Soporte Técnico",
+                "responsables": [
+                    {
+                        "nombre": "Lucía",
+                        "apellido": "Díaz",
+                        "soluciones": [
+                            {
+                                "descripcion": "Revisión de permisos de cuenta",
+                                "exito": true
+                            }
+                        ],
+                        "ticketCerrado": true
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  }
-}];
+    }
+}
 
+]
+
+
+db.getCollection('tickets').insertMany(ticket);
 
 
 //COLECCION CLIENTES
@@ -85,3 +82,46 @@ const ticket = [{
 //los empleados también pueden ser usuarios
 //La localidad es un objeto con código postal y descripción.
 
+//IDEAS CONSULTAS
+/*
+CLIENTES
+1) Cantidad de clientes con ticket por desperfecto
+2) Cantidad de clientes con ticket por cambio de plan
+*/
+
+//control sobre incidentes o desperfectos: (que desperfecto ocurre, donde , cada cuanto ,etc)
+//control de atención: (quien atiende más ticket, a que hora hay más trabajo, que trabajo está sin resolver,etc).
+//datos zonales: (desperfectos por zona, atención hecha por zona, etc)
+//datos de clientes: (quien hace más ticket, quien tiene ticket sin resolver, en qué zona tenemos más clientes, que cliente es además empleado y género ticket).
+
+//SPRINT 1
+/*
+objeto
+string
+array de valores
+array de objetos
+Front end
+Atributo de tipo objeto con array de atributo
+Colecciones
+*/
+
+//SPRINT 2
+/*
+$near
+$geoWithin
+$geoIntersect
+Operator $eq: Iguala al valor especificado.
+  - $gt: Mayor que
+  - $gte: Mayor o igual
+  - $lt: Menor que
+  - $lte: Menor igual
+  - $ne: Distinto
+  - $in: Entre los valores [a, b,c ...]
+  - $nin: No esta entre los valores [a, b,c ...]
+Logicos:
+  - $or
+  - $and
+  - $nor
+  - $not
+Busquedas por texto indices
+*/

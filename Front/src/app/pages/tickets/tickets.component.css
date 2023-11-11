@@ -13,7 +13,7 @@
   }
   
   .boton {
-    margin-bottom: 60px; /* Espacio entre botones */
+    margin-bottom: 60px;
   }
   
   .respuesta {
@@ -24,4 +24,12 @@
     align-items: start;
     justify-content:initial;
   }
+
+  .datos-cliente {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+  
   
