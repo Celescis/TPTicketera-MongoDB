@@ -1,0 +1,58 @@
+<section class="section-container">
+    <div class="container">
+        <div class="botones">
+            <div class="col-12" style="padding: 0;">
+                <div class="btn-group-vertical ">
+                    <button class="btn btn-dark mr-2" (click)="mostrarEstructuraConsulta()">Ver estructura</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarClientesTodos()">Traer Todos</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="respuesta">
+            <div *ngIf="mostrarEstructura">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <h3>Estructura de Consulta:</h3>
+                            <pre>{{ estructuraConsulta | json }}</pre>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!mostrarEstructura">
+
+                <div id="accordion">
+                    <div class="card" *ngFor="let cliente of clientes; let i = index">
+                        <div class="card-header" id="heading{{i}}">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#collapse' + i"
+                                    aria-expanded="true" [attr.aria-controls]="'collapse' + i">
+                                    Cliente {{ i + 1 }}: {{ cliente.nombre }} {{ cliente.apellido }}
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapse{{i}}" class="collapse" [attr.aria-labelledby]="'heading' + i"
+                            data-parent="#accordion">
+                            <div class="card-body">
+                                <p>Email: {{ cliente.contacto.email }}</p>
+                                <p>Teléfonos: <span
+                                        *ngFor="let telefono of cliente.contacto.telefonos; let last = last">
+                                        {{ telefono }}<span *ngIf="!last"> / </span>
+                                    </span></p>
+                                <p>Coordenadas: Latitud {{ cliente.ubicacion.geolocalizacion.coordinates[1] }},
+                                    Longitud {{ cliente.ubicacion.geolocalizacion.coordinates[0] }}</p>
+                                <p>Plan: {{ cliente.plan.nombre }}</p>
+                                <ul>
+                                    <li *ngFor="let canal of cliente.plan.canales">{{ canal }}</li>
+                                </ul>
+                                <p>Es Empleado?: {{ cliente.esEmpleado ? 'Sí' : 'No' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

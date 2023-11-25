@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { TicketsService } from 'src/app/services/tickets.service';
+import { ClientesService } from 'src/app/services/clientes.service';
+
 @Component({
-  selector: 'app-tickets',
-  templateUrl: './tickets.component.html',
-  styleUrls: ['./tickets.component.css']
+  selector: 'app-clientes',
+  templateUrl: './clientes.component.html',
+  styleUrls: ['./clientes.component.css']
 })
-export class TicketsComponent {
+export class ClientesComponent {
   infoSeleccionada = '';
   estructuraConsulta: any;
   mostrarEstructura = false;
-  tickets: any[] = [];
+  clientes: any[] = [];
 
-  constructor(private ticketService: TicketsService) { }
+  constructor(private clienteService: ClientesService) { }
 
   //TICKET ESTRUCTURA
   mostrarEstructuraConsulta(): void {
@@ -42,48 +43,17 @@ export class TicketsComponent {
           canales: []
         },
         esEmpleado: false
-      },
-      comentarioCliente: "",
-      infoTicket: [{
-        fecha: "",
-        hora: "",
-        estado: "",
-        responsableTicket: {
-          nombre: "",
-          apellido: ""
-        },
-        motivo: ""
-      }],
-      derivacion: {
-        historialDerivaciones: [{
-          fecha: "2023-11-06",
-          hora: "",
-          departamento: "",
-          responsables: [
-            {
-              nombre: "",
-              apellido: "",
-              soluciones: [
-                {
-                  descripcion: "",
-                  exito: true
-                }
-              ],
-              ticketCerrado: true
-            }
-          ]
-        }]
       }
     };
   }
 
-  cargarTicketsTodos(): void {
-    this.ticketService.traerTodos().subscribe(data => this.handleResponse(data), error => this.handleError(error));
+  cargarClientesTodos(): void {
+    this.clienteService.traerTodos().subscribe(data => this.handleResponse(data), error => this.handleError(error));
   }
-  
+
   private handleResponse(data: any): void {
     this.mostrarEstructura = false;
-    this.tickets = data;
+    this.clientes = data;
     this.infoSeleccionada = '';
   }
 
@@ -97,3 +67,4 @@ export class TicketsComponent {
     this.infoSeleccionada = info;
   }
 }
+

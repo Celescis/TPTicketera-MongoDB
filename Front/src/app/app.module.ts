@@ -7,6 +7,8 @@ import { TicketsComponent } from './pages/tickets/tickets.component';
 import { NavbarComponent } from './pages/navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ClientesComponent } from './pages/clientes/clientes.component';
+import { HomeComponent } from './pages/home/home.component';
 
 
 @NgModule({
@@ -14,6 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     TicketsComponent,
     NavbarComponent,
+    ClientesComponent,
+    HomeComponent,
 
   ],
   imports: [

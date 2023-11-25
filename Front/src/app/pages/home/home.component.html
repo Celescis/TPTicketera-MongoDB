@@ -1,0 +1,144 @@
+<section class="section-container">
+    <div class="container">
+        <div class="botones">
+            <div class="col-12">
+                <div class="btn-group-vertical">
+                    <a style="display: block; text-align: center; font-weight: bold; color: white;">OPERADORES:</a>
+                    <button class="btn btn-dark mr-2" (click)=" cargarTicketsEq()">($eq) Traer tickets en estado
+                        ABIERTO</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsGt()">($gt) Traer tickets con fecha mayor a
+                        junio 2023</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsGte()">($gte) Traer tickets con fecha mayor
+                        o igual a abril 2023</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsLt()">($lt) Traer tickets creados hasta las
+                        16 hs</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsLte()">($lte) Traer tickets creados entre
+                        las 7 am y 11 am</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsNe()">($ne) Traer tickets en estado NO
+                        cerrados</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsIn()">($in) Traer tickets que su motivo sea
+                        en desperfecto/acceso denegado</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsNin()">($nin) Traer tickets que no esten en
+                        estado ni "cerrado" ni "suspendido" </button>
+
+                    <a style="display: block; text-align: center; font-weight: bold; color: white;">LÓGICOS:</a>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsOr()">($or) Traer tickets en estado abierto
+                        o motivo
+                        desperfecto</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsAnd()">($and) Traer tickets donde el cliente
+                        es
+                        empleado y el estado es "abierto"</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsNor()">($nor) Traer tickets donde el cliente
+                        no es
+                        empleado y el estado no es "cerrado"</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsNot()">($not) Traer tickets donde el estado
+                        no es
+                        "pendiente"</button>
+
+                    <a style="display: block; text-align: center; font-weight: bold; color: white;">GEOLOCALIZACIÓN:</a>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsNear()">($near) Traer clientes que viven en
+                        el mismo
+                        punto</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsGeoWithin()">($geoWithin) Traer clientes del
+                        area
+                        aldedor de la plaza mitre</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsGeoIntersects()">($geoIntersects) Traer
+                        clientes que
+                        viven sobre la calle Belgrano</button>
+
+                    <a style="display: block; text-align: center; font-weight: bold; color: white;">AGREGATION:</a>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsText()">($text y $search) Traer los clientes con la palabra "interrupcion" en su comentario</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsExists()">($exists) Traer tickets que tienen
+                        comentario de cliente </button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsAll()">($all) Traer clientes que tienen
+                        Canal de deportes </button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsElemMatch()">($elemMatch) Traer tickets con
+                        solucion exitosa</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsSize()">($size) Traer tickets sin
+                        derivaciones</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsDesperfectos()">($unwind, $match, $group,
+                        $project) Traer
+                        frecuencia, motivos y ubicaciones de desperfectos</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarResponsablesTickets()">($unwind y $group) Traer los
+                        responsables de tickets y la cantidad de tickets atendidos</button>
+                    <button class="btn btn-dark mr-2" (click)="cargarTicketsEmpleados()">($lookup, $match y $project)
+                        Traer los clientes que son empleados y generaron ticket</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="respuesta">
+            <div>
+                <div id="accordion">
+                    <div class="card" *ngFor="let ticket of tickets; let i = index">
+                        <div class="card-header" id="heading{{i}}">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" [attr.data-target]="'#collapse' + i"
+                                    aria-expanded="true" [attr.aria-controls]="'collapse' + i">
+                                    Ticket {{ i + 1 }}: {{ (ticket?.cliente?.nombre ?? 'CONSULTA') }} {{
+                                    (ticket?.cliente?.apellido ?? (i + 1)) }}
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapse{{i}}" class="collapse" [attr.aria-labelledby]="'heading' + i"
+                            data-parent="#accordion">
+                            <div class="card-body">
+                                <div
+                                    *ngIf="ticket?.cliente?.nombre && ticket?.cliente?.apellido; then infoCompleta else infoJson">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapse{{i}}" class="collapse" [attr.aria-labelledby]="'heading' + i"
+                            data-parent="#accordion">
+                            <!-- Plantillas -->
+                            <ng-template #infoCompleta>
+                                <div class="card-body">
+                                    <p>Email: {{ ticket?.cliente?.contacto.email }}</p>
+                                    <p>Teléfonos: <span
+                                            *ngFor="let telefono of ticket.cliente.contacto.telefonos; let last = last">
+                                            {{ telefono }}<span *ngIf="!last"> / </span>
+                                        </span></p>
+                                    <p>Coordenadas: Latitud {{ ticket.cliente.ubicacion.geolocalizacion.coordinates[1]
+                                        }},
+                                        Longitud {{ ticket.cliente.ubicacion.geolocalizacion.coordinates[0] }}</p>
+                                    <p>Plan: {{ ticket.cliente.plan.nombre }}</p>
+                                    <ul>
+                                        <li *ngFor="let canal of ticket.cliente.plan.canales">{{ canal }}</li>
+                                    </ul>
+                                    <p>Comentario Cliente: {{ ticket.comentarioCliente }}</p>
+                                    <p>Es Empleado?: {{ ticket.cliente.esEmpleado ? 'Sí' : 'No' }}</p>
+                                    <div *ngFor="let info of ticket.infoTicket">
+                                        <p>Fecha: {{ info.fecha | date: 'dd/MM/yyyy' }}, Hora: {{ info.hora }}</p>
+                                        <p>Estado: {{ info.estado }}</p>
+                                        <p>Motivo: {{ info.motivo }}</p>
+                                        <p>Responsable Ticket: {{ info.responsableTicket.nombre }} {{
+                                            info.responsableTicket.apellido }}</p>
+                                    </div>
+                                    <div *ngFor="let derivacion of ticket.derivacion.historialDerivaciones">
+                                        <p>Derivación Fecha: {{ derivacion.fecha | date: 'dd/MM/yyyy' }}, Hora: {{
+                                            derivacion.hora }}</p>
+                                        <p>Departamento: {{ derivacion.departamento }}</p>
+                                        <div *ngFor="let responsable of derivacion.responsables">
+                                            <p>Responsable: {{ responsable.nombre }} {{ responsable.apellido }}</p>
+                                            <ul>
+                                                <li *ngFor="let solucion of responsable.soluciones">
+                                                    Solución: {{ solucion.descripcion }}, Éxito: {{ solucion.exito ?
+                                                    'Sí' :
+                                                    'No' }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                            <ng-template #infoJson>
+                                <pre>{{ ticket | json }}</pre>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -7,6 +7,6 @@ import 'firebase/compat/auth';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'TP TICKETERA';
+  title = 'TP TICKETERA - Celeste Cisternas';
 
 }

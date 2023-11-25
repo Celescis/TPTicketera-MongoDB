@@ -8,71 +8,72 @@
 use('Ticketera');
 
 const ticket = [
-  {
-    "cliente": {
-        "nombre": "María",
-        "apellido": "González",
-        "contacto": {
-            "email": "maria.gonzalez@email.com",
-            "telefonos": ["22223333", "44445555"]
-        },
-        "ubicacion": {
-            "localidad": {
-                "codigoPostal": "E3260",
-                "descripcion": "Concordia"
+    {
+        "cliente": {
+            "nombre": "María",
+            "apellido": "González",
+            "contacto": {
+                "email": "maria.gonzalez@email.com",
+                "telefonos": ["22223333", "44445555"]
             },
-            "coordenadas": {
-                "latitud": -31.3928,
-                "longitud": -58.0209
-            }
-        },
-        "plan": {
-            "nombre": "Plan Básico",
-            "canales": ["Canal 5", "Canal 6"]
-        },
-        "esEmpleado": false
-    },
-    "comentarioCliente": "No tengo acceso al Canal 6",
-    "infoTicket": [
-        {
-            "fecha": new Date('2023-11-05'),
-            "hora": "18:00:00",
-            "estado": "cerrado",
-            "responsableTicket": {
-                "nombre": "Carlos",
-                "apellido": "Sánchez"
+            "ubicacion": {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "coordinates": [
+                        -58.364770237352616,
+                        -34.662482290635296
+                    ],
+                    "type": "Point"
+                }
             },
-            "motivo": "acceso denegado"
-        }
-    ],
-    "derivacion": {
-        "historialDerivaciones": [
+            "plan": {
+                "nombre": "Plan Básico",
+                "canales": ["Canal 5", "Canal 6"]
+            },
+            "esEmpleado": false
+        },
+        "comentarioCliente": "No tengo acceso al Canal 6",
+        "infoTicket": [
             {
-                "fecha": new Date('2023-11-06'),
-                "hora": "19:00:00",
-                "departamento": "Soporte Técnico",
-                "responsables": [
-                    {
-                        "nombre": "Lucía",
-                        "apellido": "Díaz",
-                        "soluciones": [
-                            {
-                                "descripcion": "Revisión de permisos de cuenta",
-                                "exito": true
-                            }
-                        ],
-                        "ticketCerrado": true
-                    }
-                ]
+                "fecha": new Date('2023-11-05'),
+                "hora": "18:00:00",
+                "estado": "cerrado",
+                "responsableTicket": {
+                    "nombre": "Carlos",
+                    "apellido": "Sánchez"
+                },
+                "motivo": "acceso denegado"
             }
-        ]
+        ],
+        "derivacion": {
+            "historialDerivaciones": [
+                {
+                    "fecha": new Date('2023-11-06'),
+                    "hora": "19:00:00",
+                    "departamento": "Soporte Técnico",
+                    "responsables": [
+                        {
+                            "nombre": "Lucía",
+                            "apellido": "Díaz",
+                            "soluciones": [
+                                {
+                                    "descripcion": "Revisión de permisos de cuenta",
+                                    "exito": true
+                                }
+                            ],
+                            "ticketCerrado": true
+                        }
+                    ]
+                }
+            ]
+        }
     }
-}
 
 ]
 
+db.tickets.createIndex({ "cliente.plan.nombre": "text" });
 
-db.getCollection('tickets').insertMany(ticket);
 
 
 //COLECCION CLIENTES

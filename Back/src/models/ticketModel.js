@@ -1,26 +1,40 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+const GeoSchema = new Schema({
+  type: {
+    type: String,
+    default: "Point"
+  },
+  coordinates: {
+    type: [Number],
+    index: '2dsphere'
+  }
+});
+
 const TicketSchema = new Schema({
   cliente: {
     nombre: String,
     apellido: String,
+    dni: Number,
     contacto: {
       email: String,
       telefonos: [String]
     },
+    localidad: {
+      codigoPostal: Number,
+      descripcion: String
+    },
     ubicacion: {
-      localidad: {
-        codigoPostal: String,
-        descripcion: String
-      },
-      coordenadas: {
-        latitud: Number,
-        longitud: Number
+      geolocalizacion: GeoSchema,
+      properties: {
+        name: String
       }
     },
     plan: {
       nombre: String,
+      cantCanales:Number,
       canales: [String]
     },
     esEmpleado: Boolean
@@ -53,14 +67,15 @@ const TicketSchema = new Schema({
                 descripcion: String,
                 exito: Boolean
               }
-            ],
-            ticketCerrado: Boolean
+            ]
           }
         ]
       }
     ]
   }
 }, { timestamps: true });
+
+GeoSchema.index({ 'geolocalizacion': '2dsphere' });
 
 const Ticket = mongoose.model('Ticket', TicketSchema);
 
